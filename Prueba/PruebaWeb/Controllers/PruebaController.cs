@@ -81,7 +81,7 @@ namespace PruebaWeb.Controllers
             return View();
         }
 
-        public ActionResult DesencriptarZigZag(HttpPostedFileBase postedFile, double clave1 )
+        public ActionResult DesencriptarZigZag(HttpPostedFileBase postedFile, double? clave1 )
         {
             string rutaArchivo = string.Empty;
             //el siguiente if permite seleccionar un archivo en específico

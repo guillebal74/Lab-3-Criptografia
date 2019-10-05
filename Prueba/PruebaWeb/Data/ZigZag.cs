@@ -106,7 +106,7 @@ namespace PruebaWeb.Data
             }
         }
 
-        public void DesencriptarZigZag(HttpPostedFileBase postedFile, string ruta, double clave)
+        public void DesencriptarZigZag(HttpPostedFileBase postedFile, string ruta, double? clave)
         {
             using (var stream = new FileStream(postedFile.FileName, FileMode.Open))
             {
@@ -119,13 +119,13 @@ namespace PruebaWeb.Data
                             
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
-                                Convert.ToDouble(clave);
+                                double claveDes = Convert.ToDouble(clave);
                                 var StringBuffer = reader.ReadLine();
-                                int superior = Convert.ToInt32(Math.Ceiling(((2 * clave) + StringBuffer.Length - 3) / ((2 * clave) - 2)));
+                                int superior = Convert.ToInt32(Math.Ceiling(((2 * claveDes) + StringBuffer.Length - 3) / ((2 * claveDes) - 2)));
                                 int intermedio = 2 * (superior - 1);
                                 int inferior = superior - 1;
                                 int cont = 0;
-                                string[] nivelesDesencriptar = new string[Convert.ToInt32(clave)];
+                                string[] nivelesDesencriptar = new string[Convert.ToInt32(claveDes)];
                                 if (clave == ClaveBuenaZigZag)
                                 {
                                     //mensajeEncriptadorZiZag.ToCharArray();
@@ -135,7 +135,7 @@ namespace PruebaWeb.Data
                                     }
                                     for (int j = (StringBuffer.Length) - inferior; j < StringBuffer.Length; j++)
                                     {
-                                        nivelesDesencriptar[Convert.ToInt32(clave - 1)] += StringBuffer[j].ToString();
+                                        nivelesDesencriptar[Convert.ToInt32(claveDes - 1)] += StringBuffer[j].ToString();
                                     }
 
                                     int posicionFinal = StringBuffer.Length - (inferior + superior);
@@ -166,7 +166,7 @@ namespace PruebaWeb.Data
                                 else
                                 {
                                     var totalCaracteres = StringBuffer.Length;
-                                    double m = (totalCaracteres + (2 * (clave - 2)+1))/(2+2*(clave-2));
+                                    double m = (totalCaracteres + (2 * (claveDes - 2)+1))/(2+2*(claveDes-2));
                                     var mInt = Convert.ToInt32(Math.Round(m));
                                     if (mInt > m)
                                     {
