@@ -1,0 +1,18 @@
+﻿@model PruebaWeb.Models.PruebaViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("CaesarEncriptar", "Prueba", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <h2>Index</h2>
+
+    <br /><b><p align="left">Ingrese la clave</p></b>
+    <input type="text" name="prueba2" />
+
+    <br /><br /><br /><b><p align="left">Suba su archivo a encriptar</p></b>
+    @Html.TextBox("file", "", new { type = "file" }) <br />
+    @ViewBag.Message
+    <input type="submit" value="Subir" />
+}
