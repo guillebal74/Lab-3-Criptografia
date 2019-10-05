@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace PruebaWeb.Data
 {
@@ -22,7 +23,7 @@ namespace PruebaWeb.Data
         public static string MensajeAEncriptarZigZag = "";
         public static string MensajeDesencriptadoZigZag = "";
         public static double ClaveBuenaZigZag;
-        public void EncriptarZigZag(HttpPostedFileBase postedFile, string ruta, int clave)
+        public void EncriptarZigZag(HttpPostedFileBase postedFile, string ruta, double? clave)
         {
             using (var stream = new FileStream(postedFile.FileName, FileMode.Open))
             {
@@ -118,8 +119,9 @@ namespace PruebaWeb.Data
                             
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
+                                Convert.ToDouble(clave);
                                 var StringBuffer = reader.ReadLine();
-                                int superior = Convert.ToInt32(Math.Ceiling(((2 * clave) + MensajeAEncriptarZigZag.Length - 3) / ((2 * clave) - 2)));
+                                int superior = Convert.ToInt32(Math.Ceiling(((2 * clave) + StringBuffer.Length - 3) / ((2 * clave) - 2)));
                                 int intermedio = 2 * (superior - 1);
                                 int inferior = superior - 1;
                                 int cont = 0;

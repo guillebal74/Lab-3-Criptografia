@@ -14,8 +14,8 @@ namespace PruebaWeb
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 name:"PruebaController",
-                url:"DesencriptarZigZag/{clave}",
-                new { controller = "Prueba", action = "DesencriptarZigZag", clave = UrlParameter.Optional}
+                url:"DesencriptarZigZag/{clave1}",
+                new { controller = "Prueba", action = "DesencriptarZigZag", clave1 = UrlParameter.Optional}
                 );
             routes.MapRoute(
                 name:"PruebaController1",

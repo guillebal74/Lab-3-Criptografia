@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace PruebaWeb.Controllers
 {
@@ -56,7 +57,7 @@ namespace PruebaWeb.Controllers
             }
             return View();
         }
-        public ActionResult ZigZagEncriptar(HttpPostedFileBase postedFile, int clave)
+        public ActionResult ZigZagEncriptar(HttpPostedFileBase postedFile, double? clave)
         {
             string rutaArchivo = string.Empty;
             //el siguiente if permite seleccionar un archivo en específico
@@ -80,7 +81,7 @@ namespace PruebaWeb.Controllers
             return View();
         }
 
-        public ActionResult DesencriptarZigZag(HttpPostedFileBase postedFile, int clave)
+        public ActionResult DesencriptarZigZag(HttpPostedFileBase postedFile, double clave1 )
         {
             string rutaArchivo = string.Empty;
             //el siguiente if permite seleccionar un archivo en específico
@@ -96,7 +97,7 @@ namespace PruebaWeb.Controllers
                 string extension = Path.GetExtension(postedFile.FileName);
 
 
-                Data.ZigZag.Instance.DesencriptarZigZag(postedFile, ruta, clave);
+                Data.ZigZag.Instance.DesencriptarZigZag(postedFile, ruta, clave1);
                 byte[] ByteArchivos = new byte[postedFile.ContentLength];
                 postedFile.InputStream.Read(ByteArchivos, 0, ByteArchivos.Length);
                 return File(ByteArchivos, System.Net.Mime.MediaTypeNames.Application.Octet, postedFile.FileName);
