@@ -30,9 +30,10 @@ namespace PruebaWeb.Data
                     {
                         using (var writer = new StreamWriter(writeStream))
                         {
-                            var stringBuffer = reader.ReadLine();
+                            
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
+                                var stringBuffer = reader.ReadLine();
                                 var DiccionarioChechaMayus = new Dictionary<char, char>();
                                 var DiccionarioChechaMinus = new Dictionary<char, char>();
 
@@ -101,9 +102,10 @@ namespace PruebaWeb.Data
                     {
                         using (var writer = new StreamWriter(writeStream))
                         {
-                            var stringBuffer = reader.ReadLine();
+                            
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
+                                var stringBuffer = reader.ReadLine();
                                 var DiccionarioChechaMayus = new Dictionary<char, char>();
                                 var DiccionarioChechaMinus = new Dictionary<char, char>();
                                 string Alfabeto = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ .,:;¿?¡!1234567890";

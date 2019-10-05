@@ -56,7 +56,7 @@ namespace PruebaWeb.Controllers
             }
             return View();
         }
-        public ActionResult ZigZag(HttpPostedFileBase postedFile, int clave)
+        public ActionResult ZigZagEncriptar(HttpPostedFileBase postedFile, int clave)
         {
             string rutaArchivo = string.Empty;
             //el siguiente if permite seleccionar un archivo en específico

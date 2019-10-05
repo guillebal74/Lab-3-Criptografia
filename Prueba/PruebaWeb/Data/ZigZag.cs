@@ -32,10 +32,10 @@ namespace PruebaWeb.Data
                     {
                         using (var writer = new StreamWriter(writeStream))
                         {
-                            var StringBuffer = reader.ReadLine();
+                            
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
-                                
+                                var StringBuffer = reader.ReadLine();
                                 ClaveBuenaZigZag = Convert.ToDouble(clave);
                                 //Console.WriteLine("Ingrese mensaje a encryptar");
                                 //MensajeAEncriptarZigZag = Console.ReadLine();
@@ -80,18 +80,18 @@ namespace PruebaWeb.Data
                                 }
                                 while (niveles[0].Length < superior)
                                 {
-                                    niveles[0] += "$";
+                                    niveles[0] += "Σ";
                                 }
                                 for (int z = 1; z < Convert.ToInt32(ClaveBuenaZigZag - 1); z++)
                                 {
                                     while (niveles[z].Length < intermedio)
                                     {
-                                        niveles[z] = niveles[z] + "$";
+                                        niveles[z] = niveles[z] + "Σ";
                                     }
                                 }
                                 while (niveles[Convert.ToInt32(ClaveBuenaZigZag - 1)].Length < inferior)
                                 {
-                                    niveles[Convert.ToInt32(ClaveBuenaZigZag - 1)] += "$";
+                                    niveles[Convert.ToInt32(ClaveBuenaZigZag - 1)] += "Σ";
                                 }
                                 for (int p = 0; p < ClaveBuenaZigZag; p++)
                                 {
@@ -115,10 +115,10 @@ namespace PruebaWeb.Data
                     {
                         using (var writer = new StreamWriter(writeStream))
                         {
-                            var StringBuffer = reader.ReadLine();
+                            
                             while (reader.BaseStream.Position != reader.BaseStream.Length)
                             {
-                                
+                                var StringBuffer = reader.ReadLine();
                                 int superior = Convert.ToInt32(Math.Ceiling(((2 * clave) + MensajeAEncriptarZigZag.Length - 3) / ((2 * clave) - 2)));
                                 int intermedio = 2 * (superior - 1);
                                 int inferior = superior - 1;
@@ -158,6 +158,7 @@ namespace PruebaWeb.Data
                                     {
                                         MensajeDesencriptadoZigZag += nivelesDesencriptar[p];
                                     }
+                                    MensajeDesencriptadoZigZag = MensajeDesencriptadoZigZag.Replace("Σ", string.Empty);
                                     writer.Write(MensajeDesencriptadoZigZag);
                                 }
                                 else

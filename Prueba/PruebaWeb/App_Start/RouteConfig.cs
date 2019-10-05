@@ -12,7 +12,16 @@ namespace PruebaWeb
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapRoute(
+                name:"PruebaController",
+                url:"DesencriptarZigZag/{clave}",
+                new { controller = "Prueba", action = "DesencriptarZigZag", clave = UrlParameter.Optional}
+                );
+            routes.MapRoute(
+                name:"PruebaController1",
+                url:"ZigZagEncriptar/{clave}",
+                new { controller = "Prueba", action = "ZigZagEncriptar", clave = UrlParameter.Optional}
+                );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
