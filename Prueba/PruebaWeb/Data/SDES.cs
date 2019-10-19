@@ -25,9 +25,19 @@ namespace PruebaWeb.Data
         public static string ep;
         public static string ip;
         public static string ipInversa;
-        //public static string k1;
-        //public static string k2;
-        
+        public static string[,] SBOX0 = {
+                                            {"01","00","11","10"},
+                                            {"11","10","01","00" },
+                                            {"00","10","01","11" },
+                                            {"11","01","11","10" }
+        };
+        public static string[,] SBOX1 = {
+                                            {"00","01","10","11"},
+                                            {"10","00","01","11" },
+                                            {"11","00","01","00" },
+                                            {"10","01","00","11" }
+        };
+
         public static void obtenerPermutaciones()
         {
             using (var lector = new StreamReader("Permutaciones.txt", Encoding.Default))
@@ -60,7 +70,6 @@ namespace PruebaWeb.Data
 
             }
             string ls1 = LeftShift(kP10);
-            //var k1 = string.Empty;
             for (int j = 0; j < 8; j++)
             {
                 var index = Convert.ToInt32(p8[j].ToString());
@@ -88,7 +97,6 @@ namespace PruebaWeb.Data
             string ls1 = LeftShift(kP10);
             string primeravez = LeftShift(ls1);
             string ls2 = LeftShift(primeravez);
-            //var k2 = string.Empty;
             for (int j = 0; j < 8; j++)
             {
                 var index = Convert.ToInt32(p8[j].ToString());
@@ -168,11 +176,6 @@ namespace PruebaWeb.Data
 
                                         codificarEP += hacerEP[index];
                                     }
-                                    //int Xor1, Xor1K1, codificarXor;2<k x
-                                    //var codificarXor1 = string.Empty;
-                                    //Xor1 = Convert.ToInt32(codificarEP , 2);
-                                    //Xor1K1 = Convert.ToInt32(k1,2);
-                                    //codificarXor = Xor1 ^ Xor1K1;
                                     var codificarXor1 = string.Empty;
 
                                     codificarXor1 = XOR(codificarEP, k1, 8);
@@ -259,12 +262,7 @@ namespace PruebaWeb.Data
                                     }
 
                                     var convertirInt = 0;
-                                    ////var codificarFinal = 0;
                                     convertirInt = Convert.ToInt32(codificarIpInversa, 2);
-                                    //codificarFinal = Encoding.ASCII.GetBytes(codificarIpInversa);
-                                    ////string stringprueba = "";
-                                    ////stringprueba += codificarFinal.ToString();
-                                    //writer.Write(codificarFinal);
                                     codificarFinal[contadorPosiconByte] = Convert.ToByte(convertirInt);
                                     contadorPosiconByte++;
 
