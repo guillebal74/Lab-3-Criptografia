@@ -40,9 +40,10 @@ namespace PruebaWeb.Data
 
         public static void obtenerPermutaciones()
         {
-            using (var lector = new StreamReader("Permutaciones.txt", Encoding.Default))
+            var caminoPermutaciones = Path.Combine(HttpContext.Current.Server.MapPath("~/archivo"), "Permutaciones.txt");
+            using (var lector = new StreamReader(caminoPermutaciones, Encoding.Default))
             {
-                string a = File.ReadAllText("Permutaciones.txt");
+                string a = File.ReadAllText(caminoPermutaciones);
                 string[] x = a.Split('.');
                 p10 = x[0];
                 p8 = x[1];
