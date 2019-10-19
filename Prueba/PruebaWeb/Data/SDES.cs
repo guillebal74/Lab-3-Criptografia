@@ -136,6 +136,7 @@ namespace PruebaWeb.Data
         }
         public void CodificarSDES(HttpPostedFileBase postedFile, string ruta, string clave)
         {
+            obtenerPermutaciones();
             int bufferLength = 8;
             using (var stream = new FileStream(postedFile.FileName, FileMode.Open))
             {
@@ -266,6 +267,153 @@ namespace PruebaWeb.Data
                                     codificarFinal[contadorPosiconByte] = Convert.ToByte(convertirInt);
                                     contadorPosiconByte++;
 
+
+                                }
+                                writer.Write(codificarFinal);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public void DecodificarSDES(HttpPostedFileBase postedFile, string ruta, string clave)
+        {
+            obtenerPermutaciones();
+            int bufferLength = 8;
+            using (var stream = new FileStream(postedFile.FileName, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+                    using (var writeStream = new FileStream(ruta + "\\Descodificado.txt", FileMode.OpenOrCreate))
+                    {
+                        using (var writer = new BinaryWriter(writeStream))
+                        {
+                            var byteBuffer = new byte[bufferLength];
+                            while (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                byte[] codificarFinal = new byte[bufferLength];
+                                var contadorPosiconByte = 0;
+                                //int[] codificarFinal = new int[bufferLength];
+                                byteBuffer = reader.ReadBytes(bufferLength);
+                                foreach (var a in byteBuffer)
+                                {
+                                    string k1 = generarK1(clave);
+                                    string k2 = GenerarK2(clave);
+                                    string codificarIP = "";
+                                    string codificar = Convert.ToString(a, 2);
+                                    if (codificar.Length < 8)
+                                    {
+                                        codificar = codificar.PadLeft(8, '0');
+                                    }
+                                    for (int j = 0; j < 8; j++)
+                                    {
+                                        var index = Convert.ToInt32(ip[j].ToString());
+
+                                        codificarIP += codificar[index];
+                                    }
+                                    string hacerEP = codificarIP.Substring(4, 4);
+                                    string codificarEP = "";
+                                    for (int i = 0; i < 8; i++)
+                                    {
+                                        var index = Convert.ToInt32(ep[i].ToString());
+
+                                        codificarEP += hacerEP[index];
+                                    }
+                                    //int Xor1, Xor1K1, codificarXor;
+                                    //var codificarXor1 = string.Empty;
+                                    //Xor1 = Convert.ToInt32(codificarEP , 2);
+                                    //Xor1K1 = Convert.ToInt32(k1,2);
+                                    //codificarXor = Xor1 ^ Xor1K1;
+                                    var codificarXor1 = string.Empty;
+
+                                    codificarXor1 = XOR(codificarEP, k2, 8);
+
+
+                                    var S0 = string.Empty;
+                                    var S1 = string.Empty;
+                                    S0 = codificarXor1.Substring(0, 4);
+                                    S1 = codificarXor1.Substring(4, 4);
+                                    string f0, c0, f1, c1;
+
+                                    f0 = S0[0].ToString() + S0[3].ToString();
+                                    c0 = S0[1].ToString() + S0[2].ToString();
+                                    f1 = S1[0].ToString() + S1[3].ToString();
+                                    c1 = S1[1].ToString() + S1[2].ToString();
+
+                                    int F0, C0, F1, C1;
+                                    F0 = Convert.ToInt32(f0, 2);
+                                    C0 = Convert.ToInt32(c0, 2);
+                                    F1 = Convert.ToInt32(f1, 2);
+                                    C1 = Convert.ToInt32(c1, 2);
+
+                                    var codificarSBox = string.Empty;
+                                    codificarSBox = SBOX0[F0, C0] + SBOX1[F1, C1];
+                                    var codificarP4 = string.Empty;
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        var index = Convert.ToInt32(p4[i].ToString());
+
+                                        codificarP4 += codificarSBox[index];
+                                    }
+                                    var codificarXorConResto = string.Empty;
+                                    var primerapartedeIP = codificarIP.Substring(0, 4);
+                                    var segundaParteIP = codificarIP.Substring(4, 4);
+                                    codificarXorConResto = XOR(codificarP4, primerapartedeIP, 4);
+                                    var union = codificarXorConResto + segundaParteIP;
+                                    var codificarSwap = Swap(union);
+                                    var codificarSwapSegundaParte = codificarSwap.Substring(4, 4);
+                                    var codificarSwapEP = string.Empty;
+                                    for (int i = 0; i < 8; i++)
+                                    {
+                                        var index = Convert.ToInt32(ep[i].ToString());
+
+                                        codificarSwapEP += codificarSwapSegundaParte[index];
+                                    }
+                                    var codificarSwapEPXor = XOR(codificarSwapEP, k1, 8);
+                                    var S02 = string.Empty;
+                                    var S12 = string.Empty;
+                                    S02 = codificarSwapEPXor.Substring(0, 4);
+                                    S12 = codificarSwapEPXor.Substring(4, 4);
+                                    string f02, c02, f12, c12;
+
+                                    f02 = S02[0].ToString() + S02[3].ToString();
+                                    c02 = S02[1].ToString() + S02[2].ToString();
+                                    f12 = S12[0].ToString() + S12[3].ToString();
+                                    c12 = S12[1].ToString() + S12[2].ToString();
+
+                                    int F02, C02, F12, C12;
+                                    F02 = Convert.ToInt32(f02, 2);
+                                    C02 = Convert.ToInt32(c02, 2);
+                                    F12 = Convert.ToInt32(f12, 2);
+                                    C12 = Convert.ToInt32(c12, 2);
+
+                                    var codificarSBox2 = SBOX0[F02, C02] + SBOX1[F12, C12];
+                                    var codificarSBox2P4 = string.Empty;
+                                    var codificarSwapPrimeraParte = codificarSwap.Substring(0, 4);
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        var index = Convert.ToInt32(p4[i].ToString());
+
+                                        codificarSBox2P4 += codificarSBox2[index];
+                                    }
+                                    var codificarXorRestoSwap = XOR(codificarSBox2P4, codificarSwapPrimeraParte, 4);
+                                    var union2 = codificarXorRestoSwap + codificarSwapSegundaParte;
+                                    var codificarIpInversa = string.Empty;
+                                    for (int i = 0; i < 8; i++)
+                                    {
+                                        var index = Convert.ToInt32(ipInversa[i].ToString());
+
+                                        codificarIpInversa += union2[index];
+                                    }
+                                    var convertirInt = 0;
+                                    ////var codificarFinal = 0;
+                                    convertirInt = Convert.ToInt32(codificarIpInversa, 2);
+                                    //codificarFinal = Encoding.ASCII.GetBytes(codificarIpInversa);
+                                    ////string stringprueba = "";
+                                    ////stringprueba += codificarFinal.ToString();
+                                    //writer.Write(codificarFinal);
+                                    codificarFinal[contadorPosiconByte] = Convert.ToByte(convertirInt);
+                                    contadorPosiconByte++;
 
                                 }
                                 writer.Write(codificarFinal);
