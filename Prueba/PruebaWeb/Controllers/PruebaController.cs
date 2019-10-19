@@ -104,6 +104,51 @@ namespace PruebaWeb.Controllers
             }
             return View();
         }
+        public ActionResult SDESEncriptar(string clave, HttpPostedFileBase postedFile)
+        {
+            string rutaArchivo = string.Empty;
+            //el siguiente if permite seleccionar un archivo en específico
+            if (postedFile != null)
+            {
+                string ruta = Server.MapPath("");
+                if (!Directory.Exists(ruta))
+                {
+                    Directory.CreateDirectory(ruta);
+                }
 
+                rutaArchivo = ruta + Path.GetFileName(postedFile.FileName);
+                string extension = Path.GetExtension(postedFile.FileName);
+
+
+                Data.SDES.Instance.CodificarSDES(postedFile, ruta, clave);
+                byte[] ByteArchivos = new byte[postedFile.ContentLength];
+                postedFile.InputStream.Read(ByteArchivos, 0, ByteArchivos.Length);
+                return File(ByteArchivos, System.Net.Mime.MediaTypeNames.Application.Octet, postedFile.FileName);
+            }
+            return View();
+        }
+        public ActionResult SDESDesencriptar(HttpPostedFileBase postedFile, string clave)
+        {
+            string rutaArchivo = string.Empty;
+            //el siguiente if permite seleccionar un archivo en específico
+            if (postedFile != null)
+            {
+                string ruta = Server.MapPath("");
+                if (!Directory.Exists(ruta))
+                {
+                    Directory.CreateDirectory(ruta);
+                }
+
+                rutaArchivo = ruta + Path.GetFileName(postedFile.FileName);
+                string extension = Path.GetExtension(postedFile.FileName);
+
+
+                Data.SDES.Instance.DecodificarSDES(postedFile, ruta, clave);
+                byte[] ByteArchivos = new byte[postedFile.ContentLength];
+                postedFile.InputStream.Read(ByteArchivos, 0, ByteArchivos.Length);
+                return File(ByteArchivos, System.Net.Mime.MediaTypeNames.Application.Octet, postedFile.FileName);
+            }
+            return View();
+        }
     }
 }
